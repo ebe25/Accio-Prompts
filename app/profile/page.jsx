@@ -11,7 +11,7 @@ const MyProfile = () => {
   const router = useRouter();
   const [posts, setPosts] = useState([]);
 
-  const currSessionUserId = session?.user.id;
+  const currSessionUserId = session?.user?.id;
   const dynamicUserUrl = `api/users/${currSessionUserId}/posts`;
 
   useEffect(() => {
