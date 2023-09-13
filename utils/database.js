@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 let isConnected =false; //track connection
@@ -9,7 +10,6 @@ export const connectDB= async()=>{
         console.log("Already Connected to MongoDB");
         return;
     }
-
     try {
         await mongoose.connect(process.env.MONGODB_URI, {
             dbName:'share_prompts',
@@ -17,8 +17,8 @@ export const connectDB= async()=>{
             useNewUrlParser: true,
           
         })
-        isConnected=true;
         console.log("MongoDB connected");
+        isConnected=true;
     } catch (error) {
         console.error(`Error: ${error} `)
         process.exit(1)
