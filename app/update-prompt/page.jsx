@@ -47,7 +47,7 @@ const EditPrompt = () => {
       });
 
       //try to resolve the navigation problem-> response seems to 500 in the below if block
-      if (response.status === 500) {
+      if (response.ok) {
         //route the user to the home page
         router.push("/");
       }
