@@ -47,9 +47,11 @@ const MyProfile = () => {
         });
         setPosts(filteredPosts);
         console.log("deleted the prompt successfully!");
+        router.push("/");
       } catch (error) {
         console.log(error);
       }
+      
     }
   };
 

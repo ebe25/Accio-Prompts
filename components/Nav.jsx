@@ -6,11 +6,11 @@ import Link from "next/link";
 import Image from "next/image";
 import {useState, useEffect} from "react";
 import {signIn, signOut, getProviders, useSession} from "next-auth/react";
+import {useRouter} from "next/navigation";
 const Nav = () => {
   console.log("Rendering: Nav");
-
   const {data: session} = useSession(); //destructing dat from useSession hook, aliasing it as session
-
+  const userSession = session?.user;
   const [providers, setProviders] = useState(null);
   const [toggleDropDown, setToggleDropDown] = useState(false);
 
@@ -20,10 +20,33 @@ const Nav = () => {
       setProviders(response);
     };
     Providers();
+
+    console.log("Rendering Nav");
+    return () => {
+      console.log("Unmounting Nav"); 
+    }
   }, []);
+
 
   // console.log(session);
   // console.log(providers);
+
+  const router = useRouter();
+  //method to handle once signOut triggers -> route back to homepage
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      console.log("Session signed out!");
+      
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  };
+
+const navProfile = ()=>{
+  router.push("/profile");
+}
+
   return (
     <nav className="flex-between w-full mb-15 pt-3">
       <Link href="/" className="flex gap-2 flex-center">
@@ -39,25 +62,28 @@ const Nav = () => {
 
       {/*Desktop navigation */}
       <div className="sm:flex hidden">
-        {session?.user ? (
+        {userSession ? (
           <div className="flex gap-3 md:gap-5">
             <Link href="/create-prompt" className="black_btn">
               Create Post
             </Link>
-            <button type="button" onClick={signOut} className="outline_btn">
-              Sign out
-            </button>
 
             {/*Nav to user profile */}
-            <Link href="/profile">
+            
+              {" "}
               <Image
                 src={session?.user?.image}
                 width={34}
                 height={34}
                 className="rounded-full"
                 alt="profile"
+                onClick={navProfile}
               />
-            </Link>
+              {" "}
+
+            <button type="button" className="outline_btn" onClick={handleSignOut}>
+              Sign out
+            </button>
           </div>
         ) : (
           <>
@@ -81,7 +107,7 @@ const Nav = () => {
 
       {/*Mobile navigation */}
       <div className="sm:hidden flex relative">
-        {session?.user ? (
+        {userSession ? (
           <div className="flex">
             <Image
               src={session?.user?.image}
@@ -113,7 +139,6 @@ const Nav = () => {
                   type="button"
                   onClick={() => {
                     setToggleDropDown(false);
-                    signOut();
                   }}
                   className="mt-4 w-full rounded black_btn">
                   Sign Out{" "}

@@ -4,7 +4,7 @@
 
 import { connectDB } from "@utils/database";
 import Prompt from "@models/prompt";
-
+import User from "@models/user";
 
 //GET (read user)
 export const GET=async (request, {params})=>{
@@ -19,7 +19,7 @@ export const GET=async (request, {params})=>{
             status:200
         })
     } catch (error) {
-        return new Response("Failed to fetch all prompts", {status: 500})
+        return new Response("Internal Server Error", {status: 500})
     }
    
 }
@@ -40,9 +40,10 @@ export const PATCH =async (req, {params})=>{
 
         //save the updated prompt to db
         await existingPrompt.save();
+        return new Response("Successfully updated the Prompt", { status: 200 });
     } catch (error) {
         console.log(error.message)
-        return new Response("Failed to update the prompt", {status:500});
+        return new Response("Error updating the prompt", {status:500});
     }
 }
 
@@ -50,6 +51,7 @@ export const PATCH =async (req, {params})=>{
 export const DELETE= async(req,{params})=>{
     try {
         await connectDB()
+        // Find the prompt by ID and remove it
         await Prompt.findByIdAndRemove(params.id);
         return new Response("Deleted prompt successfully ", {status:200})
          

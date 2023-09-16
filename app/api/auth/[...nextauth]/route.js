@@ -34,7 +34,6 @@ const handler = NextAuth({
     async signIn({profile}) {
       try {
         await connectDB();
-
         //if user already exists
         //achieve that, by using findOne() on User model, returns a promise->use await
         const userExist = await User.findOne({
@@ -49,13 +48,14 @@ const handler = NextAuth({
             image: profile.picture,
           });
         }
-
         return true;
       } catch (error) {
         console.log(error);
         return false;
       }
     },
+
+   
   },
 });
 

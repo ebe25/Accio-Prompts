@@ -1,6 +1,7 @@
 // api/users/:id/posts endpoint api
 import {connectDB} from "@utils/database";
 import Prompt from "@models/prompt";
+import User from "@models/user";
 
 //localhost:3000/api/users/[id]/posts  -> gets user specific post 
 export const GET = async (req, {params}) => {
