@@ -1,6 +1,8 @@
 "use client";
 import React, {useState, useEffect} from "react";
 import PromptCard from "./PromptCard";
+import _debounce from "lodash/debounce";
+
 const PromptCardList = ({data, handleTagClick}) => {
   console.log("Rendering: PromptCardList");
   return (
@@ -20,18 +22,40 @@ const Feed = () => {
   console.log("Rendering: Feed");
   const [searchText, setSearchText] = useState(" ");
   const [posts, setPosts] = useState([]);
-  const handleSearchChange = (e) => {};
+  const [filteredPosts, setFilteredPosts] = useState([]); //original data store in filterData
+  const [isLoading, setIsLoading] = useState(false);
 
   //promptCardList m data populate
   useEffect(() => {
     //get request to fetch the prompts
     const fetchPosts = async () => {
+      setIsLoading(true); //loader for feed
       const res = await fetch("/api/prompt");
       const data = await res.json();
       setPosts(data);
+      setFilteredPosts(data);
+      setIsLoading(false);
     };
     fetchPosts();
   }, []);
+
+  //optimize network calls, using the loadash lib for debouncing
+  // Corrected handleSearchChange function
+  const handleSearchChange = _debounce((e) => {
+    const searchText = e.target.value.toLowerCase();
+    setSearchText(searchText);
+
+    // Use the filtered array based on searchText
+    const filtered = posts.filter((post) => {
+      return (
+        post.prompt.toLowerCase().includes(searchText) ||
+        post.tag.toLowerCase().includes(searchText) ||
+        post.creator.username.toLowerCase().includes(searchText)
+      );
+    });
+
+    setFilteredPosts(filtered); // Update filteredPosts with the filtered data
+  }, 500);
 
   return (
     <section className="feed">
@@ -46,7 +70,7 @@ const Feed = () => {
       </form>
 
       {/**List of prompts */}
-      <PromptCardList data={posts} handleTagClick={() => {}} />
+      <PromptCardList data={filteredPosts} handleTagClick={() => {}} />
     </section>
   );
 };

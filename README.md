@@ -1,13 +1,26 @@
-### Features to implement
-    -> Implement search
+## Features to implement
+    * Implemented search
         -search by prompt,
         -by tag
         -by by username
+        -used _debounce from lodash library
 
     -> Implement Click on tag method
     -> Implement View other profiles
+    -> Toggle theme
+##  ways to optimize the feed component:
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+    * Implement pagination or infinite scrolling. Rather than loading all posts at once, load a page of posts and add a "load more" button. This improves initial load performance and user experience on larger datasets.
+
+    *  Memoize filteredPosts. The filter operation happens on every render even if searchText hasn't changed. You can memoize filteredPosts  using useMemo to avoid unnecessary re-filters.
+
+    *Add keys to mapped elements. Add a unique key prop to the PromptCard component to avoid unnecessary re-renders from React.
+
+    * Consider server-side rendering. For initial page load, fetch posts data on the server and render markup for better performance. Hydrate on client.
+
+ ## General UI tweaks
+
+    * Consider skeleton/ShimmerUI for data fetching
 
 ## Getting Started
 
@@ -27,17 +40,4 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

@@ -8,6 +8,9 @@ import Provider from "@components/Provider";
 export const metadata = {
   title: "Promptopia-Land of Prompts",
   description: "Discover & Share AI Prompts",
+  image: "./assets/images/logo.svg", 
+  author: "Vedansh Bisht",
+  
 };
 
 const RootLayout = ({children}) => {
