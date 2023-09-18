@@ -35,6 +35,7 @@ const Feed = () => {
   const [filteredPosts, setFilteredPosts] = useState([]); //original data store in filterData
   const [isLoading, setIsLoading] = useState(false);
 
+
   //promptCardList m data populate
   useEffect(() => {
     //get request to fetch the prompts
@@ -46,9 +47,20 @@ const Feed = () => {
       setFilteredPosts(data);
       setIsLoading(false);
     };
-      fetchPosts();
-   
+    fetchPosts();
   }, []);
+
+  const handleTagClick = (tag) => {
+  
+    // Set the post result to tag-filtered searched posts
+    setSearchText(tag);
+    console.log(searchText); // Log the value of searchText
+    const filtered = posts.filter(
+      (p) => p.tag.toLowerCase() === tag.toLowerCase()
+    );
+    setFilteredPosts(filtered);
+
+  };
 
   //optimize network calls, using the loadash lib for debouncing
   // Corrected handleSearchChange function
@@ -83,8 +95,9 @@ const Feed = () => {
       {/**List of prompts */}
       <PromptCardList
         data={filteredPosts}
-        handleTagClick={() => {}}
+        handleTagClick={handleTagClick}
         isLoading={isLoading}
+      
       />
     </section>
   );

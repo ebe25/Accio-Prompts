@@ -1,33 +1,35 @@
 "use client";
 import React, {useState, useEffect} from "react";
-import {useSession} from "next-auth/react";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 import Profile from "@components/Profile";
 
-const MyProfile = () => {
-  console.log("rendering: MyProfile page");
-  const {data: session} = useSession();
+const OtherUserProfile = ({params}) => {
+  console.log("rendering: OtherUserProfile page");
   const router = useRouter();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const currSessionUserId = session?.user?.id;
-  const dynamicUserUrl = `api/users/${currSessionUserId}/posts`;
+
+  const searchParams = useSearchParams();
+  const userName = searchParams.get("name"); //willl get the name from the ? Query params
+  const userId = params.id; //id gets inside the params obj by default
 
   useEffect(() => {
     const fetchUserPosts = async () => {
       setIsLoading(true);
-      const res = await fetch(dynamicUserUrl);
-      const data = await res.json();
-      setPosts(data);
-      setIsLoading(false);
-    };
-    if (currSessionUserId) {
-      {
-        /* user exists then only call their post */
+      try {
+        const res = await fetch(`api/users/${userId}/posts`);
+        const data = await res.json();
+        console.log(data);
+        setPosts(data);
+      } catch (error) {
+        console.log("Error", error)
+      } finally{
+          setIsLoading(false);
       }
-      fetchUserPosts();
-    }
-  }, [dynamicUserUrl]);
+    
+    };
+    if (userId)  fetchUserPosts();
+  }, [userId]); //id per post change hoti rhigi isiliye
 
   const handleEdit = (post) => {
     //make sure to pass in posts since -> update-Prompt -> filtering id of posts for form comp
@@ -52,14 +54,13 @@ const MyProfile = () => {
       } catch (error) {
         console.log(error);
       }
-      
     }
   };
 
   return (
     <Profile
-      name="My"
-      desc="Welcome to your personalized profile page. Explore My exceptional prompts and be inspired by the power of their imagination"
+      name={userName}
+      desc={`Welcome to ${userName}'s personalized profile page. Explore ${userName}'s exceptional prompts and be inspired by the power of their imagination`}
       data={posts}
       handleEdit={handleEdit}
       handleDelete={handleDelete}
@@ -68,4 +69,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default OtherUserProfile;

@@ -19,7 +19,6 @@ const Profile = ({name, desc, data, handleEdit, handleDelete, isLoading}) => {
             height={70}
             width={70}
             alt="loader-img"
-           
           />
         ) : (
           data.map((post) => (

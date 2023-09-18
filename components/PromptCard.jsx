@@ -3,26 +3,36 @@
 import React, {useState} from "react";
 import Image from "next/image";
 import {useSession} from "next-auth/react";
-import {usePathname, useRouter} from "next/navigation";
+import {usePathname,useRouter} from "next/navigation";
 const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}) => {
-  console.log("Rendering: Promptcard");
-
+  console.log("Rendering:Promptcard");
   const {data: session} = useSession();
   const pathName = usePathname();
-  const router=useRouter()
   const [copied, setCopied] = useState("");
+  const router=useRouter();
 
   const handleCopy = () => {
     setCopied(post.prompt);
     navigator.clipboard.writeText(post.prompt); //copy to clipBoard
     setTimeout(() => setCopied(""), 3000); //3 sec bad copied update ""
   };
+  const handleProfileClick=()=>{
+    console.log(post);
+    console.log(session);
+    if(post.creator._id== session?.user.id){
+      //same user's post
+      return router.push("/profile");
+    }
+    //if some other's user post -> route to their profile.
+    router.push(`/profile/${post.creator._id}/?name=${post.creator.username}`);
+
+  }
   return (
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">
         <div
           className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
-          onClick={() => {}}>
+          onClick={handleProfileClick}>
           <Image
             src={post.creator?.image}
             alt="user_image"
@@ -62,17 +72,15 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}) => {
       </p>
 
       {session?.user.id === post.creator._id && pathName === "/profile" && (
-        <div className='mt-5 flex-center gap-4 border-t border-gray-100 pt-3'>
+        <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
           <p
-            className='font-inter text-sm green_gradient cursor-pointer'
-            onClick={handleEdit}
-          >
+            className="font-inter text-sm green_gradient cursor-pointer"
+            onClick={handleEdit}>
             Edit
           </p>
           <p
-            className='font-inter text-sm orange_gradient cursor-pointer'
-            onClick={handleDelete}
-          >
+            className="font-inter text-sm orange_gradient cursor-pointer"
+            onClick={handleDelete}>
             Delete
           </p>
         </div>

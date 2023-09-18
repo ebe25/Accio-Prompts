@@ -1,5 +1,4 @@
 ## Features to implement
-    -> Implement Click on tag method
     -> Implement View other profiles
     -> Toggle theme
 ## Implemented
@@ -8,6 +7,7 @@
         -by tag
         -by by username
         -used _debounce from lodash library
+    * Implemented Click on tag method but needs reload after
 
 ##  Ways to optimize the feed component:
 
