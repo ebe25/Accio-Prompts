@@ -2,18 +2,28 @@
 import React, {useState, useEffect} from "react";
 import PromptCard from "./PromptCard";
 import _debounce from "lodash/debounce";
+import Image from "next/image";
 
-const PromptCardList = ({data, handleTagClick}) => {
+const PromptCardList = ({data, handleTagClick, isLoading}) => {
   console.log("Rendering: PromptCardList");
   return (
     <div className="mt-16 prompt_layout">
-      {data.map((post) => (
-        <PromptCard
-          key={post._id}
-          post={post}
-          handleTagClick={handleTagClick}
+      {isLoading ? (
+        <Image
+          src="/assets/icons/loader.svg"
+          width={60}
+          height={60}
+          alt="loader-gif"
         />
-      ))}
+      ) : (
+        data.map((post) => (
+          <PromptCard
+            key={post._id}
+            post={post}
+            handleTagClick={handleTagClick}
+          />
+        ))
+      )}
     </div>
   );
 };
@@ -36,7 +46,8 @@ const Feed = () => {
       setFilteredPosts(data);
       setIsLoading(false);
     };
-    fetchPosts();
+      fetchPosts();
+   
   }, []);
 
   //optimize network calls, using the loadash lib for debouncing
@@ -70,7 +81,11 @@ const Feed = () => {
       </form>
 
       {/**List of prompts */}
-      <PromptCardList data={filteredPosts} handleTagClick={() => {}} />
+      <PromptCardList
+        data={filteredPosts}
+        handleTagClick={() => {}}
+        isLoading={isLoading}
+      />
     </section>
   );
 };

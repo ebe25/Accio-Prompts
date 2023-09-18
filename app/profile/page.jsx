@@ -10,15 +10,17 @@ const MyProfile = () => {
   const {data: session} = useSession();
   const router = useRouter();
   const [posts, setPosts] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const currSessionUserId = session?.user?.id;
   const dynamicUserUrl = `api/users/${currSessionUserId}/posts`;
 
   useEffect(() => {
     const fetchUserPosts = async () => {
+      setIsLoading(true);
       const res = await fetch(dynamicUserUrl);
       const data = await res.json();
       setPosts(data);
+      setIsLoading(false);
     };
     if (currSessionUserId) {
       {
@@ -26,7 +28,7 @@ const MyProfile = () => {
       }
       fetchUserPosts();
     }
-  }, []);
+  }, [dynamicUserUrl]);
 
   const handleEdit = (post) => {
     //make sure to pass in posts since -> update-Prompt -> filtering id of posts for form comp
@@ -62,6 +64,7 @@ const MyProfile = () => {
       data={posts}
       handleEdit={handleEdit}
       handleDelete={handleDelete}
+      isLoading={isLoading}
     />
   );
 };
