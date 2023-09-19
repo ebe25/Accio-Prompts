@@ -17,7 +17,7 @@ const OtherUserProfile = ({params}) => {
     const fetchUserPosts = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`api/users/${userId}/posts`);
+        const res = await fetch(`/api/users/${userId}/posts`);
         const data = await res.json();
         console.log(data);
         setPosts(data);
