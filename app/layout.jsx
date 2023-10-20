@@ -6,16 +6,20 @@ import Provider from "@components/Provider";
 //use nav, in the layout page, since it will be used across all the pages
 
 export const metadata = {
-  title: "Promptopia-Land of Prompts",
-  description: "Discover & Share AI Prompts",
-  image: "./assets/images/logo.svg", 
+  title: "PatronusPrompt-Land of Prompts",
+  description:
+    "Unlock Creativity with PatronusPrompt: Your AI-Powered Magical Muse for Inspiring, Creating, and Sharing Enchanting Prompts in the Modern World",
   author: "Vedansh Bisht",
-  
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 const RootLayout = ({children}) => {
   return (
-    <html lang="en">
+    <html lang="en">  
+  
+   
       <body>
         <Provider>
           <div className="main">

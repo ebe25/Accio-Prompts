@@ -57,7 +57,7 @@ const navProfile = ()=>{
           height={30}
           className="object-contain"
         />
-        <p className="logo_text">PrompTopia</p>
+        <p className="logo_text">Accio Prompts</p>
       </Link>
 
       {/*Desktop navigation */}
