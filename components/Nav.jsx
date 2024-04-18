@@ -75,8 +75,8 @@ const navProfile = ()=>{
                 src={session?.user?.image}
                 width={34}
                 height={34}
-                className="rounded-full"
-                alt="profile"
+                className="rounded-full cursor-pointer"
+                alt={session?.user?.name}
                 onClick={navProfile}
               />
               {" "}
@@ -112,9 +112,9 @@ const navProfile = ()=>{
             <Image
               src={session?.user?.image}
               width={34}
+              alt={session?.user?.name}
               height={34}
-              className="rounded-full"
-              alt="profile"
+              className="rounded-full cursor-pointer"
               onClick={() => setToggleDropDown(!toggleDropDown)}
             />
 
